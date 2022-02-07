@@ -1,10 +1,11 @@
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from .views import SongViewSet, RatingViewSet
+from .views import SongViewSet, RatingViewSet, UserViewSet
 
 
 router = routers.DefaultRouter()
+router.register('users', UserViewSet)
 router.register('songs', SongViewSet)
 router.register('ratings', RatingViewSet)
 
