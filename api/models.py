@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Song(models.Model):
     title = models.CharField(max_length=32)
     artist = models.CharField(max_length=32)
-    description = models.TextField(max_length=360)
+    type = models.TextField(max_length=360)
 
 
 class Rating(models.Model):
