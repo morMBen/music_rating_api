@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.contrib.auth.models import User
+from rest_framework.authentication import TokenAuthentication
 from .models import Song, Rating
 from .serializers import SongSerializer, RatingSerializer
 
@@ -10,6 +10,7 @@ from .serializers import SongSerializer, RatingSerializer
 class SongViewSet(viewsets.ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
+    authentication_classes = (TokenAuthentication,)
 
     @action(detail=True, methods=['POST'])
     def rate_song(self, request, pk=None):
@@ -17,9 +18,7 @@ class SongViewSet(viewsets.ModelViewSet):
 
             song = Song.objects.get(id=pk)
             stars = request.data['stars']
-            # user = request.user # ← will be anonymous
-            user = User.objects.get(id=2)
-
+            user = request.user
             try:
                 rating = Rating.objects.get(user=user.id, song=song.id)
                 rating.stars = stars
@@ -40,3 +39,4 @@ class SongViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+    authentication_classes = (TokenAuthentication,)
